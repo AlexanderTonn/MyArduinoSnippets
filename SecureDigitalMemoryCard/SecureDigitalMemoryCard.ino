@@ -5,9 +5,7 @@
 | Mega               | 53      | 52        | 51          | 50          |
 | MKR WiFi 1010      | 7       | 9         | 8           | 10          |
 
-##### TROUBLESHOOTING FINDINGS: SD init is failing
-- play safe that power supply is constantly >=5V (in my case i increased my LM317 Circuit up to 5,1V)
-- disconnect the power supply of Arduino if you debugging with USB Port
+Check my wiki for more informations: https://github.com/AlexanderTonn/MyArduinoSnippets/wiki/SD-Card 
 */
 
 
@@ -15,14 +13,21 @@
 #include <SD.h>   // https://www.arduino.cc/reference/en/libraries/sd/
 #include <SPI.h>  // https://www.arduino.cc/reference/en/language/functions/communication/spi/
 
+//Instances of SD Lib
 Sd2Card card;
 SdVolume volume;
 SdFile root;
-SdFile file;
 
-const byte byChipSelect = 53;  // SCK Pin. of Arduino MEGA
-const uint32_t uiBaudrate = 230400;
+// Variables vor initializing
+bool xInitiated = false;              // global Status whether SD Card present
+const byte byChipSelect = 53;         // SCK Pin. of Arduino MEGA
+uint32_t uiBaudrate = 230400;
 uint32_t uiVolumesize = 0;
+
+// Variables for read/write files
+// Consider the 8.3 Format rules for naming files!
+String sFile = "EXAMPLE.TXT";             // File without Dir
+String sFileDir = "/DAT/EXAMPLE.TXT";      // File with Dir
 
 void setup() {
 
@@ -30,9 +35,8 @@ void setup() {
   Serial.begin(uiBaudrate);
   pinMode(byChipSelect, OUTPUT);
 
-  sdInit();
-
-
+  xInitiated = sdInit();
+  sdInitFiles(xInitiated);
 }
 
 void loop() {
@@ -40,14 +44,13 @@ void loop() {
 
 }
 
-
-void sdInit(){
+// Initializing SD Card, return true if successfull
+bool sdInit(){
+  SD.begin(byChipSelect);
   Serial.println("Start to initialize SD Card");
   card.init();
   delay(100);
   volume.init(card);
-  delay(100);
-  root.openRoot(volume);
   delay(100);
   
   
@@ -58,7 +61,7 @@ void sdInit(){
     Serial.println("SD Card present?");
     Serial.println("Is SDCard FAT32?");
     Serial.println("SPI-SS correct?");
-    return;
+    return false;
   } else
     Serial.println("SD Card found and initialized");
 
@@ -81,6 +84,44 @@ void sdInit(){
   Serial.println("Gb");
 
   // List all Files on SD CArd 
+  Serial.println("Existing files after finishing SD Init");
   root.openRoot(volume);
-  root.ls(LS_R | LS_DATE | LS_SIZE);  
+  root.ls(LS_R | LS_DATE | LS_SIZE);
+
+  return true;
 }
+
+// Function for initializing the needed directorys and files.
+// if the SD init is successfull (see passed "xInitiated") the root path will check whether dirs & and files are existing
+void sdInitFiles(bool xInitiated){
+
+  if (xInitiated == true){
+
+    // Create File in root path
+    if(!SD.exists(sFile)){
+      File file = SD.open(sFile, FILE_WRITE);
+      if(file){
+        Serial.println("Create file EXAMPLE.TXT");
+        file.close();
+      }
+      else
+        Serial.println("Creating file failed");
+    }
+
+    //Create File in Directory
+    if(!SD.exists("DAT")){
+      SD.mkdir("DAT");
+      File file = SD.open(sFileDir, FILE_WRITE);
+      if(file){
+        Serial.println("Create File EXAMPLE.TXT in Directory DAT");
+        file.close();
+      }else
+      Serial.println("Creating file failed");
+    }
+
+  // Check in Serial Output whether all files & dirs created
+  Serial.println("Existing files after finishing FILE init");
+  root.ls(LS_R | LS_DATE | LS_SIZE);
+  }
+}
+
