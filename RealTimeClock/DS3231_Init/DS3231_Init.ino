@@ -10,12 +10,9 @@ bool xCentury;
 bool xH12;  // 12/24h Flag
 bool xhPM;  //AM/PM Flag
 
-
 void setup() {
   Serial.begin(uiBaudrate);
-  Wire.begin();
-  delay(500);
-
+  
   rtcInit();
   ds3231SetupHandler();
   Serial.println("RTC Init done");
@@ -27,18 +24,17 @@ void loop() {
 }
 
 void rtcInit() {
-  // Checking OscillatorStopFlag
-  Serial.println("Start Checking OSF");
-  Wire.beginTransmission(0x68);
-  Wire.write(0x0F);  //status register, which contains OSF Flag on 7th position
-  Wire.endTransmission();
-  Wire.requestFrom(0x68, 1);  //Request for getting content of status register
+  Serial.println("RTC init...");
 
-  byte by = Wire.read();
-  if ((by & 0x80) != 0x80) {
-    Serial.println("RTC running OSF=0");
+  Wire.begin();
+  delay(500);
+  Wire.beginTransmission(0x68);
+  byte by = Wire.endTransmission();
+
+  if (by == 0) {
+    Serial.println("RTC is running");
   } else {
-    Serial.println("RTC not running OSF=1");
+    Serial.println("RTC is not running");
   }
 }
 
@@ -141,9 +137,6 @@ void ds3231SetupHandler() {
                   byLeapYearConditions[0] = byYear % 4;
                   byLeapYearConditions[1] = byYear % 100;
                   byLeapYearConditions[2] = byYear % 400;
-                  Serial.println(byLeapYearConditions[0]);
-                  Serial.println(byLeapYearConditions[1]);
-                  Serial.println(byLeapYearConditions[2]);
 
                   //Basically all Year which divisible with 4 are leapyears
                   if (byLeapYearConditions[0] == 0) {
