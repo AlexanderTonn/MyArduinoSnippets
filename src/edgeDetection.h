@@ -9,7 +9,7 @@
  * @return false
  */
 template<typename T1, typename T2, typename T3 >
-auto atUtilities::edgeDetection (T1 TinputSignal, T2 &TpreviousSignal, edgeType Type, T3 Ttrigger ) -> bool {
+auto edgeDetection (T1 TinputSignal, T2 &TpreviousSignal, edgeType Type, T3 Ttrigger ) -> bool {
   // RISING EDGE detection
   switch(Type)
   {

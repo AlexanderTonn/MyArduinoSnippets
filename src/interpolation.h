@@ -11,7 +11,7 @@
  * @return float 
  */
 template <size_t T>
-auto atUtilities::fLinInterpolation (float fx, const Array<float, T>& aX, const Array<float, T>& aY) -> float
+auto fLinInterpolation (float fx, const Array<float, T>& aX, const Array<float, T>& aY) -> float
 {
   static auto n = sizeof(aX) / 4;
   auto x1 = 0.0F, x2 = 0.0F; 
