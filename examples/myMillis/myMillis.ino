@@ -1,3 +1,15 @@
+/**
+ * @file myMillis.ino
+ * @author Alexander Tonn
+ * @brief In this example the function myMillis() is used to get the current time in milliseconds.
+ * ! Used Board: Arduino MEGA2560
+ * ! Used Pins: none
+ * @version 1.0
+ * @date 2024-01-02
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include "atUtility.h"
 
 atUtilities atUtil;

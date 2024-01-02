@@ -1,15 +1,10 @@
 #include "atUtility.h"
-
 /**
- * @brief
- *
- * @tparam T1
- * @tparam T2
- * @tparam T3
- * @param TinputSignal
- * @param TpreviousSignal
- * @param Type
- * @param Ttrigger
+ * @brief Detecting the rising or falling edge of a boolean or analog signals (e.g. button, switch, potentiometer)
+ * @param TinputSignal is the signal that is checked for a rising edge
+ * @param TpreviousSignal is the "old value" of inputSignal, have to be a separate variable
+ * @param Type is the edge type, can be atUtilities::edgeType::RISING_EDGE or FALLING_EDGE
+ * @param Ttrigger For Boolean: HIGH or LOW | For Analog: any analog value, can be any datatype
  * @return true
  * @return false
  */
@@ -24,12 +19,12 @@ auto atUtilities::edgeDetection (T1 TinputSignal, T2 &TpreviousSignal, edgeType 
       return true;
     }
     // Resetting the signal if Ttrigger was reached
-    else if ((TinputSignal >= Ttrigger && TpreviousSignal >= Ttrigger)
+    else if ((TinputSignal >= Ttrigger && TpreviousSignal >= Ttrigger) 
           || (TinputSignal < Ttrigger && TpreviousSignal >= Ttrigger)) {
       TpreviousSignal = TinputSignal;
       return false;
-    }else
-      return false;
+    }else 
+      return false; 
     break;
 
     case edgeType::FALLING_EDGE :
@@ -41,7 +36,7 @@ auto atUtilities::edgeDetection (T1 TinputSignal, T2 &TpreviousSignal, edgeType 
       TpreviousSignal = TinputSignal;
       return false;
     }
-    else
+    else 
       return false;
     break;
 
