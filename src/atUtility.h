@@ -6,25 +6,32 @@
 
 class atUtilities
 {
-    private:
-
-    public:
-
-    enum class edgeType{
-    RISING_EDGE,
-    FALLING_EDGE
+public:
+    enum class edgeType
+    {
+        RISING_EDGE,
+        FALLING_EDGE
+    };
+    enum class permission
+    {
+        READ,
+        WRITE
     };
 
-    auto myMillis(uint64_t& uiMyMillis) -> void;
+    auto myMillis(uint64_t &uiMyMillis) -> void;
 
     auto functionTrigger(uint32_t &uiMillisOld, uint32_t uiTargetTime) -> bool;
     auto secondToMs(uint16_t uiS) -> uint16_t;
     auto fmap(float f, float fInputMin, float fInputMax, float fOutputMin, uint16_t fOutputMax) -> float;
 
-    #include "edgeDetection.h"
-    #include "interpolation.h"
+private:
 
+    auto bitRangeCheck(uint8_t uiSize, byte byBitPos) -> bool;
 
+public:
+#include "edgeDetection.h"
+#include "interpolation.h"
+#include "bitManipulation.h"
 };
 
 #endif
