@@ -1,3 +1,6 @@
+#ifndef BITMANIPULATION_H
+#define BITMANIPULATION_H
+
 #include "atUtility.h"
 
 // 
@@ -43,3 +46,5 @@ auto bitManipulation (permission p, tVar &input, byte byBitPos, bool x ) -> bool
         }
     }
 }
+
+#endif // BITMANIPULATION_H

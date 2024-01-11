@@ -38,6 +38,8 @@ public:
 #include "edgeDetection.h"
 #include "interpolation.h"
 #include "bitManipulation.h"
+#include "arrayUtils.h"
+
 };
 
 #endif

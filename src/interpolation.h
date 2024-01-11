@@ -1,3 +1,6 @@
+#ifndef INTERPOLATION_H
+#define INTERPOLATION_H
+
 #include "atUtility.h"
 
 /**
@@ -49,3 +52,4 @@ auto fLinInterpolation (float fx, const Array<float, T>& aX, const Array<float, 
   }
   return fResult;
 }
+#endif // INTERPOLATION_H

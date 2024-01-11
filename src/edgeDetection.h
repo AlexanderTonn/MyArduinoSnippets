@@ -1,3 +1,6 @@
+#ifndef EDGEDETECTION_H
+#define EDGEDETECTION_H
+
 #include "atUtility.h"
 /**
  * @brief Detecting the rising or falling edge of a boolean or analog signals (e.g. button, switch, potentiometer)
@@ -47,3 +50,5 @@ auto edgeDetection (T1 TinputSignal, T2 &TpreviousSignal, edgeType Type, T3 Ttri
   }
 
 }
+
+#endif // EDGEDETECTION_H
